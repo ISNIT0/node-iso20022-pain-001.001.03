@@ -1,5 +1,5 @@
-# PAIN 001.001.03 Generator
-
+# ISO20022 PAIN 001.001.03 Generator
+[![Build Status](https://travis-ci.org/ISNIT0/node-iso20022-pain-001.001.03.svg?branch=master)](https://travis-ci.org/ISNIT0/node-iso20022-pain-001.001.03)
 ## Usage
 ```bash
 npm i pain-001-001-03
@@ -13,6 +13,9 @@ const XMLString = await generateAndValidateXml(
     transactions as Transaction[]
 );
 ```
+
+### Full Example
+[src/test.ts](src/test.ts)
 
 ## Argument types
 See [src/types.d.ts](src/types.d.ts)
