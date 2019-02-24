@@ -1,5 +1,5 @@
 {
-  "name": "generate-iso20022-pain-001-001-03",
+  "name": "pain-001-001-03",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
