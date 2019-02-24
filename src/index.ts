@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import libxml from 'libxmljs';
-import { Length, IsOptional, IsDate, IsNumber, Min, IsString, MaxLength, validate } from "class-validator";
+import { validate } from "class-validator";
 import { isDate } from 'util';
 import * as dot from 'dot';
 
@@ -14,51 +14,6 @@ const xsd = fs.readFileSync('./pain.001.001.03.xsd', 'utf8');
 const templateXml = fs.readFileSync('./template.xml', 'utf8');
 
 const template = dot.template(templateXml, { ...dot.templateSettings, strip: false });
-
-
-type KVS<T> = { [key: string]: T }
-
-interface PartyDefinition {
-    Nm: string;
-    PstlAdr: PostalAddress;
-}
-
-interface PostalAddress {
-    StrtNm: string;
-    BldgNb: string;
-    PstCd: string;
-    TwnNm: string;
-    Ctry: string;
-}
-
-interface BranchData {
-    Id: string;
-    Nm?: string;
-    PstlAdr?: PostalAddress;
-}
-
-interface BranchAndFinancialInstitutionIdentification {
-    // FinInstnId: FinancialInstitutionIdentification,
-    BrnchId?: BranchData
-}
-
-class GrpHdr {
-    @IsString() MsgId?: string;
-    @IsDate() CreDtTm?: Date;
-    @IsNumber() NbOfTxs?: number;
-    @IsNumber() CtrlSum?: number; // Consider making this mandatory
-    InitgPty: PartyDefinition;
-};
-
-class PmtInf {
-    PmtInfId?: string;
-    PmtMtd: 'TRF' | 'TRA' | 'CHK';
-    BtchBookg?: boolean;
-    ReqdExctnDt?: Date; // Date to debit account
-    Dbtr: PartyDefinition;
-    DbtrAcct: { iban: string };
-    DbtrAgt: { bic: string }
-}
 
 function readFilePromise(path: string) {
     return new Promise<string>((resolve, reject) => {
@@ -143,94 +98,3 @@ function treatData(data: KVS<any> | any[]): any {
         }, {});
     }
 }
-
-
-
-// export function generateAndValidate(args: PaymentArgs) {
-
-//     const doc = new libxml.Document();
-//     const CstmrCdtTrfInitn = doc.node('Document')
-//         .attr({ 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance', 'xmlns': 'urn:iso:std:iso:20022:tech:xsd:pain.001.001.03' })
-//         .node('CstmrCdtTrfInitn');
-
-//     const GrpHdr = CstmrCdtTrfInitn
-//         .node('GrpHdr');
-
-//     const PmtInf = CstmrCdtTrfInitn
-//         .node('PmtInf');
-
-//     return doc.toString();
-
-// }
-
-// class GenericAccount {
-//     @IsString() @Length(1, 35) Id: string;
-//     SchmeNm?: string;
-//     Issr?: string;
-//     <xs: element name = "Id" type = "Max34Text" />
-//     <xs: element maxOccurs = "1" minOccurs = "0" name = "SchmeNm" type = "AccountSchemeName1Choice" />
-//         <xs: element maxOccurs = "1" minOccurs = "0" name = "Issr" type = "Max35Text" />
-// }
-
-type CashAccount = { iban: string } //| GenericAccount;
-
-type TransactionPurpose = { Cd: string /* 1-4char */ } | { Prtry: string /* Max 35char */ }
-
-type CdtrAgt = { bic: string /* /[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}/ */ } // | {...}
-
-class CashAmount {
-    @IsNumber() @Min(0) Amount: number;
-    @IsString() @Length(3, 3) Currency: string;
-};
-
-interface Transaction {
-    InstrId?: string;
-    EndToEndId: string;
-    Amount: CashAmount;
-    ChrgBr: 'SLEV' | 'SHAR' | 'CRED' | 'DEBT';
-    CdtrAgt: CdtrAgt;
-    Cdtr: PartyDefinition;
-    CdtrAcct: CashAccount;
-    Purp?: TransactionPurpose;
-}
-
-// <PmtId>
-//     <InstrId>ABC/090928/CCT001/01</InstrId>
-//     <EndToEndId>ABC/4562/2009-09-08</EndToEndId>
-// </PmtId>
-// <Amt>
-//     <InstdAmt Ccy="JPY">10000000</InstdAmt>
-// </Amt>
-// <ChrgBr>SHAR</ChrgBr>
-// <CdtrAgt>
-//     <FinInstnId>
-//         <BIC>AAAAGB2L</BIC>
-//     </FinInstnId>
-// </CdtrAgt>
-// <Cdtr>
-//     <Nm>DEF Electronics</Nm>
-//     <PstlAdr>
-//         <AdrLine>Corn Exchange 5th Floor</AdrLine>
-//         <AdrLine>Mark Lane 55</AdrLine>
-//         <AdrLine>EC3R7NE London</AdrLine>
-//         <AdrLine>GB</AdrLine>
-//     </PstlAdr>
-// </Cdtr>
-// <CdtrAcct>
-//     <Id>
-//         <Othr>
-//             <Id>23683707994125</Id>
-//         </Othr>
-//     </Id>
-// </CdtrAcct>
-// <Purp>
-//     <Cd>CINV</Cd>
-// </Purp>
-// <RmtInf>
-//     <Strd>
-//         <RfrdDocInf>
-//             <Nb>4562</Nb>
-//             <RltdDt>2009-09-08</RltdDt>
-//         </RfrdDocInf>
-//     </Strd>
-// </RmtInf>

@@ -8,12 +8,11 @@
     "url": "https://github.com/ISNIT0/node-iso20022-pain-001.001.03"
   },
   "scripts": {
-    "start": "ts-node-dev src/test.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-node-dev src/test.ts",
     "prepublish": "tsc"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Joseph E. Reeve",
+  "license": "MIT",
   "dependencies": {
     "@types/dot": "^1.1.3",
     "@types/libxmljs": "^0.18.3",
