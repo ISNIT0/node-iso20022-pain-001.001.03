@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "repository": {
-    "type":"git",
+    "type": "git",
     "url": "https://github.com/ISNIT0/node-iso20022-pain-001.001.03"
   },
   "scripts": {

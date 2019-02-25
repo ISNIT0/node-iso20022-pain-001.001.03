@@ -1,4 +1,4 @@
-import { Length, IsOptional, IsDate, IsNumber, Min, IsString, MaxLength } from 'class-validator';
+import { Length, IsOptional, IsDate, IsNumber, Min, IsString, MaxLength, IsPhoneNumber, IsMobilePhone, IsEmail } from 'class-validator';
 
 declare global {
     type KVS<T> = { [key: string]: T }
@@ -34,6 +34,12 @@ declare global {
         Ctry: string;
     }
 
+    class ContactDetails {
+        @IsString() Nm: string;
+        @IsMobilePhone('ZZ') MobNb: string;
+        @IsEmail() EmailAdr: string;
+    }
+
     type CashAccount = { iban: string } //| GenericAccount;
 
     type TransactionPurpose = { Cd: string /* 1-4char */ } | { Prtry: string /* Max 35char */ }
@@ -50,8 +56,8 @@ declare global {
         EndToEndId: string;
         Amount: CashAmount;
         ChrgBr: 'SLEV' | 'SHAR' | 'CRED' | 'DEBT';
-        CdtrAgt: CdtrAgt;
-        Cdtr: PartyDefinition;
+        CdtrAgt?: CdtrAgt;
+        Cdtr: ContactDetails;
         CdtrAcct: CashAccount;
         Purp?: TransactionPurpose;
     }

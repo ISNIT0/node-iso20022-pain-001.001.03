@@ -13,13 +13,8 @@ const PayingPerson = {
 
 const PersonBeingPaid = {
     Nm: 'Joe Reeve',
-    PstlAdr: {
-        StrtNm: 'Hi',
-        BldgNb: 'Hi',
-        PstCd: 'Hi',
-        TwnNm: 'Hi',
-        Ctry: 'UK',
-    }
+    MobNb: '+447480833086',
+    EmailAdr: 'joe@della.hu',
 }
 
 generateAndValidateXml(
@@ -51,7 +46,7 @@ generateAndValidateXml(
 ).then((xmlDoc: string) => {
     console.log('Generated Document:', xmlDoc.trim());
     console.log(`Validated Successfully!`);
-}, ({xmlDoc, validationErrors}) => {
+}, ({ xmlDoc, validationErrors }) => {
     console.warn(`Generated Document:`, xmlDoc);
     console.warn(`Validation Failed:`, validationErrors);
 });

@@ -4,14 +4,7 @@ import { validate } from "class-validator";
 import { isDate } from 'util';
 import * as dot from 'dot';
 
-// const generatedXml = '';
-
-const xsd = fs.readFileSync('./pain.001.001.03.xsd', 'utf8');
-// const xsdDoc = libxml.parseXml(xsd);
-
-// const generatedXmlDoc = libxml.parseXml(generatedXml);
-
-const templateXml = fs.readFileSync('./template.xml', 'utf8');
+const templateXml = fs.readFileSync(__dirname + '/../template.xml', 'utf8');
 
 const template = dot.template(templateXml, { ...dot.templateSettings, strip: false });
 
@@ -44,7 +37,7 @@ export async function generateAndValidateXml(
         transactions: treatData(transactions)
     });
 
-    const xsd = await readFilePromise('./pain.001.001.03.xsd');
+    const xsd = await readFilePromise(__dirname + '/../pain.001.001.03.xsd');
     const xsdDoc = libxml.parseXml(xsd);
 
     const generatedXmlDoc = libxml.parseXmlString(xmlDoc);
@@ -74,6 +67,12 @@ function getNormalisedValue(value: any, key: string) {
         if (!key.includes('DtTm')) {
             value = value.split('T')[0]
         }
+    } else if (key === 'MobNb') {
+        value = '+' + value.replace(/[^0-9]/g, '')
+        const mobParts = value.split('')
+        mobParts.splice(3, 0, '-')
+        value = mobParts.join('')
+        return value
     }
 
     return value;

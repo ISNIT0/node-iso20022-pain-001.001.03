@@ -53,20 +53,20 @@
                     <InstdAmt Ccy="{{=transaction.Amount.Currency}}">{{=transaction.Amount.Amount}}</InstdAmt>
                 </Amt>
                 <ChrgBr>{{=transaction.ChrgBr}}</ChrgBr>
+                {{? transaction.CdtrAgt}}
                 <CdtrAgt>
                     <FinInstnId>
                         <BIC>{{=transaction.CdtrAgt.bic}}</BIC>
                     </FinInstnId>
                 </CdtrAgt>
+                {{?}}
                 <Cdtr>
                     <Nm>{{=transaction.Cdtr.Nm}}</Nm>
-                    <PstlAdr>
-                        <StrtNm>{{=transaction.Cdtr.PstlAdr.StrtNm}}</StrtNm>
-                        <BldgNb>{{=transaction.Cdtr.PstlAdr.BldgNb}}</BldgNb>
-                        <PstCd>{{=transaction.Cdtr.PstlAdr.PstCd}}</PstCd>
-                        <TwnNm>{{=transaction.Cdtr.PstlAdr.TwnNm}}</TwnNm>
-                        <Ctry>{{=transaction.Cdtr.PstlAdr.Ctry}}</Ctry>
-                    </PstlAdr>
+                    <CtctDtls>
+                        <Nm>{{=transaction.Cdtr.Nm}}</Nm>
+                        <MobNb>{{=transaction.Cdtr.MobNb}}</MobNb>
+                        <EmailAdr>{{=transaction.Cdtr.EmailAdr}}</EmailAdr>
+                    </CtctDtls>
                 </Cdtr>
                 <CdtrAcct>
                     <Id>
